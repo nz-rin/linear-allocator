@@ -65,7 +65,7 @@ This also means you can safely resize and control the buffer without your refere
 # Reallocating
 - **realloc**:
 Use this function to resize the buffer to your needs.
-__IMPORTANT NOTE__: All inside the buffer and pointer within the buffer will become unsafe and unaccessable
+__IMPORTANT NOTE__: All pointers within the buffer will become unsafe or unaccessable since it resets the cursor and creates a new buffer
 
 # Copying info from the buffer
 The following functions provide a way to get copies of data
