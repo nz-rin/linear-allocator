@@ -172,7 +172,10 @@ template<typename T>
 void inline linear_allocator<T>::append(const void *src_buffer, size_t append_amount){
 
 	if(linear_allocator::buffer_cursor + append_amount > linear_allocator::max_capacity){
-		linear_allocator::_grow_buffer();
+		while(linear_allocator::max_capacity < linear_allocator::buffer_cursor + append_amount){
+			linear_allocator::_grow_buffer();
+		}
+
 	}else if(linear_allocator::buffer_cursor + append_amount > linear_allocator::current_capacity){
 		linear_allocator::current_capacity += append_amount;
 	}
