@@ -65,15 +65,9 @@ This also means you can safely resize and control the buffer without your refere
 # Reallocating
 - **realloc**:
 Use this function to resize the buffer to your needs.
-<<<<<<< HEAD
 __IMPORTANT NOTE__: All pointers within the buffer will become unsafe or unaccessable since it resets the cursor and creates a new buffer
-=======
-<<<<<<< HEAD
-__IMPORTANT NOTE__: All pointers within the buffer will become unsafe or unaccessable since it resets the cursor and creates a new buffer
-=======
+
 __IMPORTANT NOTE__: All inside the buffer and pointer within the buffer will become unsafe and unaccessable
->>>>>>> 419923d (Fixed append bug where it didn't grow and safely copy data if append size was double the buffer size.)
->>>>>>> ed3cfcb (Fixed issue where buffer wouldnt grow and safe data properly when appending data larger than twice buffer size)
 
 # Copying info from the buffer
 The following functions provide a way to get copies of data
