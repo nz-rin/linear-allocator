@@ -11,7 +11,7 @@ void example_using_the_buffer(){
 	};
 
 	// typedef char_buffer is the same as linear_allocator<char>(CAPACITY)
-	char_buffer line(CAPACITY);
+	char_buffer line(CAPACITY/3);
 
 	//copying the contents of mock_file into the internal buffer
 	line.append(mock_file, CAPACITY);

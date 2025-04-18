@@ -16,6 +16,8 @@ class linear_allocator{
 	T * buffer 	= nullptr;
 
 	void _grow_buffer();
+	void _safe_grow_buffer(size_t safe_grow_amount);
+
 	public:
 	linear_allocator(const linear_allocator &) = delete;
 	linear_allocator(linear_allocator &&) = delete;
@@ -172,10 +174,7 @@ template<typename T>
 void inline linear_allocator<T>::append(const void *src_buffer, size_t append_amount){
 
 	if(linear_allocator::buffer_cursor + append_amount > linear_allocator::max_capacity){
-		while(linear_allocator::max_capacity < linear_allocator::buffer_cursor + append_amount){
-			linear_allocator::_grow_buffer();
-		}
-
+		linear_allocator::_safe_grow_buffer((linear_allocator::buffer_cursor+append_amount)*2);
 	}else if(linear_allocator::buffer_cursor + append_amount > linear_allocator::current_capacity){
 		linear_allocator::current_capacity += append_amount;
 	}
@@ -330,6 +329,30 @@ void linear_allocator<T>::relative_seek(ssize_t relative_shift){
 }
 
 //privates
+
+template<typename T>
+void linear_allocator<T>::_safe_grow_buffer(size_t safe_grow_size){
+	linear_allocator::max_capacity = safe_grow_size;
+	linear_allocator::current_capacity = linear_allocator::max_capacity;
+
+	T *_safe_buffer = new T[max_capacity];
+
+	size_t *_ = (size_t *)_safe_buffer;
+	size_t _copy_size = linear_allocator::buffer_cursor;
+	size_t i = 0;
+	while(_copy_size > 8){
+		*_++ = (const size_t&)linear_allocator::buffer[i];
+		i += 8;
+		_copy_size -=8;
+	}
+
+	char* __ = (char*)_;
+	while(_copy_size--){
+		*__++ = linear_allocator::buffer[i++] ;
+	}
+	delete linear_allocator::buffer;
+	linear_allocator::buffer = _safe_buffer;
+}
 
 template<typename T>
 void linear_allocator<T>::_grow_buffer(){
